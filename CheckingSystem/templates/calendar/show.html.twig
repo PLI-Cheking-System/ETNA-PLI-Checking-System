@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar
+{% endblock %}
+
+{% block body %}
+	<style>
+		#calendar {
+			margin: 1em auto;
+			width: 80%;
+			border: 1px solid #ccc;
+			padding: 1em;
+		}
+		a {
+			color: #000;
+		}
+	</style>
+	{% block stylesheets %}
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
+	{% endblock %}
+	<div class="mt-2 ms-5">
+		<a href="{{ path('app_calendar_index') }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	</div>
+<section class="d-flex flex-row align-items-start" id="all">
+
+	<div class=" mt-4" style="width: 40%;" id="all-subjects" >
+	<h1 class="text-center">Subjects</h1>
+	<div id="list" class=" bg-light rounded p-2 w-100 ms-4"></div>
+	<!-- <a href="#" class="btn btn-success m-4" id="save">
+		<div class="card-body p-4" id="save-button" onclick="saveCalendar('{{ schedule.classeSchedule }}')">
+			<h5 class="card-title">Save Calendar</h5>
+		</div>
+	</a> -->
+	{% if is_granted('ROLE_ADMIN')%}
+	<a href="{{ path('app_calendar_sendCalendar', {'id': schedule.id}) }}" class="btn ms-4 mt-4 w-100 " id="send" style="background-color: #2c3e50; color: #fff;">
+		<div class="card-body p-2" id="send-button">
+			<h5 class="card-title">Send Calendar to all students</h5>
+		</div>
+	</a>
+	{% endif %}
+	<div class="mt-4 ms-4">
+		<h1>Students ({{ students|length }})</h1>
+		<ul class="list-group ">
+		{% for student in students %}
+			<li class="list-group-item d-flex justify-content-between align-items-center">{{ student.firstName }} {{ student.lastName }} <a href="{{ path('app_student_show', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px"></a></li>
+		{% endfor %}
+		</ul>
+		</div>
+	</div>
+
+	<div id="all-calendar" class="w-100">
+	<div class="d-flex flex-row justify-content-center align-items-center">
+		<h1 class="" id="className">Calendar
+			{{ schedule.classeSchedule}} </h1>
+			<a class="" href="{{ path('app_subject_new') }}"> <img src="{{ asset('assets/local-img/button/add.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	</div>
+	<div id="calendar" class=" bg-light rounded" style="width: 75%;"></div>
+</div>
+</section>
+
+	{% block javascript %}
+	{# imports #}
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js" integrity="sha256-7PzqE1MyWa/IV5vZumk1CVO6OQbaJE4ns7vmxuUP/7g=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+		<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.0.0-rc.7/dist/html2canvas.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/jspdf-html2canvas@latest/dist/jspdf-html2canvas.min.js"></script>
+		<script src='fullcalendar/dist/index.global.js'></script>
+		<script>
+			window.onload = () => {
+let calendarElmnt = document.querySelector('#calendar');
+let calendar = new FullCalendar.Calendar(calendarElmnt, {
+initialView: 'timeGridWeek',
+locale: 'en',
+timeZone: 'United_States',
+headerToolbar: {
+left: 'prev,next today',
+center: 'title',
+right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+},
+events: {{ data|raw }},
+editable: true,
+eventResizableFromStart: true
+
+
+})
+calendar.on('eventChange', (event) => {
+let url = event.event.url + '/move';
+let dataSubject = {
+"display": null,
+"url": event.event.url,
+"title": event.event.title,
+"start": event.event.start,
+"end": event.event.end,
+"backgroundColor": event.event.backgroundColor,
+"borderColor": event.event.borderColor,
+"textColor": event.event.textColor,
+"allDay": event.event.allDay
+}
+// console.log(dataSubject); (c'était pour le drag and drop tout ça)
+// let xhr = new XMLHttpRequest()
+// xhr.open('PUT', url);
+// let datas = JSON.stringify(dataSubject);
+// console.log(datas);
+// xhr.send(datas);
+})
+calendar.render();
+generateList(calendar);
+
+function generateList(calendar) {
+let list = document.querySelector('#list');
+let listElmnt = new FullCalendar.Calendar(list, {
+	initialView: 'listWeek',
+	locale: 'en',
+	timeZone: 'United_States',
+	headerToolbar: {
+	left: 'title',
+	center: 'today',
+	right: 'prev,next'
+	},
+	events: calendar.getEvents(),
+
+})
+listElmnt.render();
+
+}
+}
+	</script>
+	
+<script src="{{ asset('/assets/js/saveCalendar.js') }}"></script>
+	{% endblock %}
+{% endblock %}

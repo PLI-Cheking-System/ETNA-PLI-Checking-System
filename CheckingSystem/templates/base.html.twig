@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="{{ asset('assets/local-img/flavicon.png') }}">
+		<meta
+		name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}"> 
+        {% block stylesheets %}{% endblock %}
+		<link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
+	</head>
+	<body class="bg">
+
+		{% block header %}
+			{% include '_partials/_header.html.twig' %}
+		{% endblock %}
+
+		{% block body %}{% endblock %}
+
+		{% block footer %}
+			{% include '_partials/_footer.html.twig' %}
+		{% endblock %}
+        <!-- javascript -->
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js" integrity="sha256-7PzqE1MyWa/IV5vZumk1CVO6OQbaJE4ns7vmxuUP/7g=" crossorigin="anonymous"></script>
+		<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" defer></script>
+		{% block javascripts %}{% endblock %}
+		<script src="{{ asset('assets/js/scripts.js') }}"></script>
+	</body>
+</html>

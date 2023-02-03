@@ -1,0 +1,132 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-center mt-4 mb-4" style="color: #2c3e50;"><b>Checking System</b></h1>
+
+<section class="container d-flex flex-row mt-3 w-75">
+		
+	<div class="d-flex flex-column">
+
+		{% if is_granted('ROLE_ADMIN') %}
+		<h1 class="text-center">Last Week Subjects</h1>
+		{% else %}
+		<h1 class="text-center">My Subjects</h1>
+		{% endif %}
+<div class="tableau bg-myColor p-4 rounded d-flex justify-content-center flex-column">
+    <table class="table border border-secondary ">
+        <thead>
+            <tr>
+                <th>Teacher</th>
+				<th>Subject</th>
+				<th>Class</th>
+                <th>Date</th>
+				<th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if is_granted('ROLE_ADMIN') %}
+            {% for allSubject in subjects %}
+			{% set lastWeek = 'now -7 days'|date('Y-m-d') %}
+			{% if allSubject.startAt|date('Y-m-d') > lastWeek %}
+				<tr>
+				 
+                    <td>{{ allSubject.teacherName }}</td>
+                    <td>{{ allSubject.subjectName }}</td>
+                    <td>{{ allSubject.scheduleId.classeSchedule }}</td>
+                    <td>{{ allSubject.startAt ? allSubject.startAt|date('Y/m/d') : '' }}</td> 
+					<td>
+						<a class="" href="{{ path('app_subject_show', {'id': allSubject.id}) }}"><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px" class="img-fluid"></a>
+					</td>
+                </tr>
+			{% endif %}
+            {% endfor %}
+       
+            {% else %}
+        {% for subject in my_subjects %}
+		{% set lastWeek = 'now -7 days'|date('Y-m-d') %}
+		{% if subject.startAt|date('Y-m-d') > lastWeek %}
+		<tr>
+                <td>{{ subject.teacherName }}</td>
+                <td>{{ subject.subjectName }}</td>
+                <td>{{ subject.scheduleId.classeSchedule }}</td>
+                <td>{{ subject.startAt ? subject.startAt|date('Y/m/d') : '' }}</td>
+                <td>
+					<a class="" href="{{ path('app_subject_show', {'id': subject.id}) }}"><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+                </td>
+            </tr>
+		
+			{% endif %}
+        {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{# <div class="w-100">
+	<div class="card mt-3 bg-myColor">
+		<div class="card-header">
+			<h3 class="text-center">Box</h3>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-6">
+					<p class="card-text">Data</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> #}
+
+</div>
+
+<div class="w-100">
+	<h1 class="text-center mt-4 mb-4">Shortcuts</h1>
+	<div class="d-flex flex-wrap justify-content-center">
+		<div class="col-4 m-3">
+			<div class="card">
+				<a href="{{ path('app_calendar_index') }}" class="btn" style="background-color: #2c3e50; color: #fff;">
+					<div class="card-body p-4">
+						<h5 class="card-title">Calendar</h5>
+						{# <p class="card-text">View all calendar</p> #}
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-4 m-3">
+			<div class="card">
+				<a href="{{ path('app_student_all') }}" class="btn" style="background-color: #2c3e50; color: #fff;">
+					<div class="card-body p-4">
+						<h5 class="card-title">Student List</h5>
+						{# <p class="card-text">View all students</p> #}
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-4 m-3">
+			<div class="card">
+				<a href="{{ path('app_users') }}" class="btn" style="background-color: #2c3e50; color: #fff;">
+					<div class="card-body p-4">
+						<h5 class="card-title">Users</h5>
+						{# <p class="card-text">View all users</p> #}
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="col-4 m-3">
+			<div class="card">
+				<a href="{{ path('app_student_presence') }}" class="btn" style="background-color: #2c3e50; color: #fff;">
+					<div class="card-body p-4">
+						<h5 class="card-title">Attendance</h5>
+						{# <p class="card-text">View all Presence</p> #}
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+User : {{ user.firstName }}
+{% endblock %}
+
+{% block body %}
+
+<p class="mt-2 ms-5">
+    <a href="{{ path('app_users') }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+</p>
+<section class="d-flex justify-content-center align-items-center">
+    <div class="card mt-3 d-flex justify-content-center col-6 ">
+        <div class="card-header d-flex justify-content-between w-100">
+            <h3 class="card-title">User Profile</h3> 
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Email:</strong>
+                    {{ user.email }}
+                    <br>
+                    <strong>Firstname:</strong>
+                    {{ user.firstName }}
+                    <br>
+                    <strong>Lastname:</strong>
+                    {{ user.lastName }}
+                    <br>
+                    <strong>Id :</strong>
+                    {{ user.id }}
+                    <br>
+                    <strong>Joined at :</strong>
+                    {{ user.createdAt|date('Y') }}
+                    <br>
+                    <strong>Roles :</strong>
+                    {% if is_granted('ROLE_ADMIN') %}
+					Admin 
+				{% elseif is_granted('ROLE_USER') %}
+					Teacher
+				{% else %}
+					Guest
+					{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    {% if is_granted('ROLE_ADMIN')%}
+    <div class="text-center mt-3">
+        <a href="{{ path('app_users_edit', {'id': user.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+        <a href="{{ path('app_users_delete', {'id': user.id}) }}" class=""><img src="{{ asset('assets/local-img/button/remove.png') }}" width="30px" height="30px"></a>
+        <br>
+        {# <a href="{{ path('app_users_login', {'id': user.id}) }}" class="btn btn-success mt-2">Connect as
+        (doesnt work)</a> #}
+    </div>
+{% endif %}
+{% endblock %}

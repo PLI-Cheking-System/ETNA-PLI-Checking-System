@@ -1,0 +1,52 @@
+doctrine:
+    dbal:
+        driver: 'pdo_mysql'
+        host : 'pli-db00008999.mdb0002865.db.skysql.net'
+        port : '5008'
+        dbname: 'MainDB'
+        user : 'DB00008999'
+        password : 'kidake2023PLI!'
+        charset: 'utf8mb4'
+        # Options for SSL connection
+        options :
+            !php/const PDO::MYSQL_ATTR_SSL_CA: '/home/david/Etna/PLI/Second_project/Scrut_db_v_0/config/skysql_chain.pem'
+            # !php/const PDO::MYSQL_ATTR_SSL_KEY: '/home/david/Telechargement/client-key.pem'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '13'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system

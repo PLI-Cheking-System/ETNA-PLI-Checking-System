@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	<style>
+		.text-center {
+			text-align: center;
+		}
+		.ms-3 {
+			margin-left: 3px;
+		}
+		.text-end {
+			text-align: end;
+		}
+		.me-3 {
+			margin-right: 3px;
+		}
+	</style>
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+	<h1 class="text-center">
+		<img src="https://cdn.discordapp.com/attachments/535565827534094336/1062930211169108068/VraiLogo.png" alt="Logo" class="d-flex justify-content-center align-items-center" width="200px" height="200px">
+		<br>
+		Your planning
+	</h1>
+	<br>
+	<h2 class="ms-3">Hi
+		{{ student.firstname }}
+        {{ student.lastname }}
+		!</h2>
+	<br>
+	<h4 class="ms-3">
+		There is your planning for the next week in the attached file.
+	</h4>
+	<br>
+	<h4 class="ms-3">
+		If you have any questions, please contact us at this<a href="mailto: checkingsystem2023@gmail.com">
+			mail
+		</a>
+	</h4>
+	<br>
+	<br>
+	<h4 class="ms-3">
+		Best regards,
+	</h4>
+	<h4 class="ms-3">
+		The Checking System Team Siuuuu
+	</h4>
+	<br>
+	<br>
+
+	<h4 class="text-end me-5">
+		<i>
+			This is an automatic email, please do not reply to it.
+		</i>
+	</h4>
+	{% block footer %}{% endblock %}
+{% endblock %}

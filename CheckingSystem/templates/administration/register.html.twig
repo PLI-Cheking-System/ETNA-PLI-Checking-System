@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="vh-90 d-flex justify-content-center align-items-center">
+    <div class="col-md-6 p-5 shadow-sm border rounded-3 mt-5 bg-light">
+            <h1>Register</h1>
+    {{ form_start(registrationForm) }} 
+    <fieldset>
+        <legend>Personal Information</legend>
+        {{ form_row(registrationForm.firstName) }}
+        <br>
+        {{ form_row(registrationForm.lastName) }}
+         <br>
+        {{ form_row(registrationForm.email) }}
+         <br>
+        {{ form_row(registrationForm.plainPassword, {'label': 'Password'}) }}
+         <br>
+        {{ form_row(registrationForm.RGPDConsent) }}
+    </fieldset>
+
+     <div class="mt-3">
+                    <p class="mb-0  text-center">Already have an account? <a href="login"
+                            class="text-primary fw-bold">Sign
+                            In</a></p>
+                </div>
+                <div class="d-grid">
+                    <button class="btn btn-primary my-3" type="submit">Register</button>
+                </div>
+    {{ form_end(registrationForm) }}
+        </div>
+</div>
+
+{% endblock %}

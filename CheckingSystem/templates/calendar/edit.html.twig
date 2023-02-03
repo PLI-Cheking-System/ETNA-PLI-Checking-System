@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin
+{% endblock %}
+
+{% block body %}
+	{# form for editing a Schedule #}
+	{% if is_granted('ROLE_ADMIN') %}
+	<p class="mt-2 ms-5">
+		<a href="{{ path('app_calendar_index') }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	</p>
+	<div class="col-6 mx-auto border rounded-3 bg-light p-5">
+		{{ form_start(ScheduleForm) }}
+		<fieldset class="">
+			<legend class="text-center">Schedule Information</legend>
+			{{ form_row(ScheduleForm.classeSchedule) }}
+		</fieldset>
+		<div class="d-grid">
+			<button class="btn btn-primary my-3" type="submit">Edit Schedule</button>
+		</div>
+		{{ form_end(ScheduleForm) }}
+	</div>
+	{% else %}
+		<div class="text-center p-5">
+			<h1>You are not Admin, you can't edit a Schedule</h1>
+			<a href="{{ path('app_calendar_index') }}" class="btn btn-success">Back to the list</a>
+		</div>
+
+	{% endif %}
+
+{% endblock %}

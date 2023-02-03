@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Subject{% endblock %}
+
+{% block body %}
+<p class="mt-2 ms-5">
+    <a  href="{{ path('app_subject_show', {'id': subject.id}) }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+</p>
+<h1 class="text-center">Edit Subject</h1>
+
+    {{ include('subject/_form.html.twig', {'button_label': 'Update'}) }}
+{% endblock %}

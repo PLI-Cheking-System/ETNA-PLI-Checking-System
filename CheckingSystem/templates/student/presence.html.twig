@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student attendance
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/cards.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center align-items-center">
+	<h1 class="m-3"> Student attendance </h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_student_new') }}"> <img src="{{ asset('assets/local-img/button/add.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	{% endif %} 
+	</div>
+	<div class="d-flex p-3 mt-3 justify-content-center" >
+		{{ form_start(searchbarForm) }}
+		<div class="input-group mb-3">
+			{{ form_widget(searchbarForm.search_bar, {'attr': {'class': 'form-control', 'placeholder': 'Search'}}) }}
+				<button class="btn" type="submit" id="button-addon2"> <img src="{{ asset('assets/local-img/loupe.png') }}" width="20px" height="20px"> </button>
+		</div>
+		{{ form_end(searchbarForm) }}
+	</div>
+
+		<div class="d-flex justify-content-center align-items-center">
+			<table class="table table-striped table-hover  w-75 border border-1 border-dark p-3 bg-light">
+				<thead>
+					<tr>
+						<th scope="col">Student</th>
+						<th scope="col">Status</th>
+						<th scope="col">Class</th>
+						<th scope="col">Actions</th>
+						{% if is_granted('ROLE_ADMIN') %}
+						<th scope="col">Admin actions</th>
+						{% endif %}
+					</tr>
+				</thead>
+				<tbody>
+					{% for student in students %}
+						<tr>
+							<td>{{ student.firstName }} {{ student.lastName }}</td>
+							<td>{% if student.presence >= 1 %}
+							<span class="badge bg-success">Present</span>
+						{% else %}
+							<span class="badge bg-danger">Absent</span>
+						{% endif %}</td>
+							<td>{{ student.scheduleId.classeSchedule }} <a href="{{ path('app_calendar_show', {'id': student.scheduleId.id}) }}" class=""><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px"></a></td>
+							<td><a href="{{ path('app_student_show', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px"></a>
+								<a href="{{ path('app_student_set_present', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/present.png') }}" width="30px" height="30px"></a>
+								<a href="{{ path('app_student_set_absent', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/remove.png') }}" width="30px" height="30px"></a>
+							</td>
+							<td>
+								{% if is_granted('ROLE_ADMIN')%}
+								<a href="{{ path('app_student_edit', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+								<a href="{{ path('app_student_delete', {'id': student.id}) }}" class=""> <img src="{{ asset('assets/local-img/button/trash.png') }}" width="30px" height="30px"></a>
+								{% endif %}
+							</td>
+						</tr>
+					</tbody>
+					{% endfor %}
+			</table>
+		</div>
+
+		<div class="d-flex justify-content-center align-items-center">
+			<a href="{{ path('app_student_set_all_absent') }}" class="btn btn-danger">Reset presence</a>
+		</div>	
+
+			{% endblock %}

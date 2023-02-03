@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" integrity="sha256-5veQuRbWaECuYxwap/IOE/DAwNxgm4ikX7nrgsqYp88=" crossorigin="anonymous">
+</head>
+<body>
+	<h1>Subjects</h1>
+	<div id="list"></div>
+	</div>
+
+	<div>
+		<h1  id="className">Calendar
+			{{ schedule.classeSchedule}} </h1>
+	</div>
+	<div id="calendar"></div>
+</div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js" integrity="sha256-7PzqE1MyWa/IV5vZumk1CVO6OQbaJE4ns7vmxuUP/7g=" crossorigin="anonymous"></script>
+
+		<script>
+			window.onload = () => {
+let calendarElmnt = document.querySelector('#calendar');
+let calendar = new FullCalendar.Calendar(calendarElmnt, {
+initialView: 'timeGridWeek',
+locale: 'en',
+timeZone: 'United_States',
+headerToolbar: {
+left: 'prev,next today',
+center: 'title',
+right: 'dayGridMonth,timeGridWeek,timeGridDay'
+},
+events: {{ data|raw }},
+editable: true,
+eventResizableFromStart: true
+
+
+})
+calendar.on('eventChange', (event) => {
+let url = event.event.url + '/move';
+let dataSubject = {
+"display": null,
+"url": event.event.url,
+"title": event.event.title,
+"start": event.event.start,
+"end": event.event.end,
+"backgroundColor": event.event.backgroundColor,
+"borderColor": event.event.borderColor,
+"textColor": event.event.textColor,
+"allDay": event.event.allDay
+}
+
+})
+calendar.render();
+generateList(calendar);
+
+function generateList(calendar) {
+let list = document.querySelector('#list');
+let listElmnt = new FullCalendar.Calendar(list, {
+	initialView: 'listWeek',
+	locale: 'en',
+	timeZone: 'United_States',
+	headerToolbar: {
+	left: 'title',
+	center: 'today',
+	right: 'prev,next'
+	},
+	events: calendar.getEvents(),
+
+})
+listElmnt.render();
+
+}
+}
+	</script>
+</html>

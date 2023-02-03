@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subject
+{% endblock %}
+
+{% block body %}
+<p class="mt-2 ms-5">
+    <a  href="{{ path('app_calendar_show', {'id': scheduleId}) }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+</p>
+	<h1 class="text-center mt-4">Subject Info</h1>
+
+	<table class="table text-center ">
+		<tbody>
+			<tr>
+				<th>TeacherName</th>
+				<td>{{ subject.teacherName }}</td>
+			</tr>
+			<tr>
+				<th>SubjectName</th>
+				<td>{{ subject.subjectName }}</td>
+			</tr>
+			<tr>
+				<th>schedule Classroom</th>
+				<td>{{ subject.scheduleId.classeSchedule }}</td>
+			</tr>
+			<tr>
+				<th>Start_at</th>
+				<td>{{ subject.startAt ? subject.startAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>End_at</th>
+				<td>{{ subject.endAt ? subject.endAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>All_day</th>
+				<td>{{ subject.allDay ? 'Yes' : 'No' }}</td>
+			</tr>
+		</tbody>
+	</table>
+	{% if x == 1 %}
+		<div class="text-center">
+			<a href="{{ path('app_subject_edit', {'id': subject.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+			{{ include('subject/_delete_form.html.twig') }}
+		</div>
+	{% endif %}
+
+
+{% endblock %}

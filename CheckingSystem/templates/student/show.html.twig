@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ student.firstName }}
+{% endblock %}
+
+{% block body %}
+<p class="mt-2 ms-5">
+	<a href="{{ path('app_student_all') }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+</p>
+{% set path = asset('assets/qrCode/' ~ student.qrCode) %}
+{% if is_granted('ROLE_ADMIN')%}
+<div class="text-center mt-3">
+	<button onclick="downloadQrCode('{{ path }}')" class="btn btn-primary">Download QR Code</button>
+</div>
+{% endif %}
+<section class="d-flex justify-content-center align-items-center">
+    <div class="card mt-3 d-flex justify-content-center col-6 ">
+        <div class="card-header d-flex justify-content-between w-100">
+            <h3 class="card-title"> <img src="{{ asset('assets/img/' ~ student.image) }}" width="70px" height="70px" class="rounded-circle border border-dark"> {{ student.firstName }} {{ student.lastName }}</h3>
+			<img src="{{ asset('assets/qrCode/' ~ student.qrCode) }}" width="70px" height="70px">
+		</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+					<strong>Class:</strong>
+			{{ student.scheduleId.classeSchedule }}
+			<a href="{{ path('app_calendar_show', {'id': student.scheduleId.id}) }}" class=""><img src="{{ asset('assets/local-img/button/eye.png') }}" width="30px" height="30px"></a>
+					<br>
+                    <strong>Email:</strong>
+                    {{ student.email }}
+                    <br>
+					<strong>Phone:</strong>
+					{{ student.phone }}
+					<br>
+					<strong>Status (présent/absent):</strong>
+					{% if student.presence >= 1 %}
+						<span class="badge bg-success">Present</span>
+					{% else %}
+						<span class="badge bg-danger">Absent</span>
+					{% endif %}
+					<br>
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+	{% if is_granted('ROLE_ADMIN')%}
+	<div class="text-center mt-3">
+		<a href="{{ path('app_student_edit', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+		<a href="{{ path('app_student_delete', {'id': student.id}) }}" class=""> <img src="{{ asset('assets/local-img/button/remove.png') }}" width="30px" height="30px"></a>
+	</div>
+{% endif %}
+	<script>
+		function downloadQrCode(path) {
+			var a = document.createElement('a');
+			a.href = path;
+			a.download = '{{ student.firstName }}_{{ student.lastName }}_QRCode.png';
+			a.click();
+		}
+	</script>
+{% endblock %}

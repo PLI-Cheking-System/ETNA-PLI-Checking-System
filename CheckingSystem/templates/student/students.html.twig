@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Students
+{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('assets/css/cards.css') }}">
+{% endblock %}
+
+{% block body %}
+
+<div class="d-flex justify-content-center align-items-center">
+	<h1 class="m-3"> List of students </h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_student_new') }}"> <img src="{{ asset('assets/local-img/button/add.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	{% endif %} 
+	</div>
+	<div class="d-flex p-3 mt-3 justify-content-center" >
+		{{ form_start(searchbarForm) }}
+		<div class="input-group mb-3">
+			{{ form_widget(searchbarForm.search_bar, {'attr': {'class': 'form-control', 'placeholder': 'Search'}}) }}
+				<button class="btn" type="submit" id="button-addon2"> <img src="{{ asset('assets/local-img/loupe.png') }}" width="20px" height="20px"> </button>
+		</div>
+		{{ form_end(searchbarForm) }}
+	</div>
+	<div class="container mt-3">
+		<div class="d-flex flex-wrap justify-content-center align-items-center">
+		{% for student in students %}
+			<a href="{{ path('app_student_show', {'id': student.id}) }}" class="text-decoration-none text-reset">
+						<div class="mb-2 p-3 d-flex flex-column">
+							<div class="card d-flex flex-column align-items-center justify-content-center">
+								<div class="inner-content d-flex flex-column align-items-center justify-content-center">
+									<div class="img-container rounded-circle">
+										<img src="{{ asset('assets/img/' ~ student.image) }}"
+											alt="" class="rounded-circle">
+									</div>
+									<div class="h3">{{ student.firstName }}
+										{{ student.lastName}}</div>
+									<p class="designation text-muted text-uppercase">Class : {{ student.scheduleId.classeSchedule }}</p>
+								</div>
+							</div>
+							{% if is_granted('ROLE_ADMIN')%}
+										<div class="text-center mt-3">
+											<a href="{{ path('app_student_edit', {'id': student.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+											<a href="{{ path('app_student_delete', {'id': student.id}) }}" class=""> <img src="{{ asset('assets/local-img/button/remove.png') }}" width="30px" height="30px"></a>
+										</div>
+								{% endif %}
+						</div>
+									
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+			{% endblock %}

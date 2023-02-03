@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendar
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center">
+	<h1 class="p-3">All Calendar </h1>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_calendar_new') }}"> <img src="{{ asset('assets/local-img/button/add.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	{% endif %} 
+	</div>
+	<section class="d-flex flex-wrap m-5 justify-content-center">
+		{% for schedule in schedules %}
+		{% if schedule.id != 0 %}
+		<div class="mb-2 p-3 d-flex flex-column">
+		<a href="{{ path('app_calendar_show', {'id': schedule.id}) }}" class="text-decoration-none">
+			<div class="card p-3 m-3">
+				<div class="card-header text-center">
+					<h2>{{ schedule.classeSchedule }}</h2>
+				</div>
+			</div>
+        </a>
+		{% if is_granted('ROLE_ADMIN')%}
+			<div class="text-center">
+				<a href="{{ path('app_calendar_edit', {'id': schedule.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"></a>
+				<a href="{{ path('app_calendar_delete', {'id': schedule.id}) }}" class=""><img src="{{ asset('assets/local-img/button/remove.png') }}" width="30px" height="30px"></a>
+			</div>
+		{% endif %}
+							</div>
+		{% endif %}
+		{% endfor %}
+        </section>       
+	{% endblock %}

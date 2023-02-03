@@ -1,0 +1,34 @@
+<div class="vh-90 d-flex justify-content-center align-items-center">
+    <div class="col-md-6 p-5 shadow-sm border rounded-3 mt-5 bg-light">
+{{ form_start(form) }}
+<fieldset class="">
+	{% if is_granted('ROLE_ADMIN') %}
+		{{ form_row(form.teacherName) }}
+		<br>
+	{% else %}
+    {{ form_widget(form.teacherName, {'attr': {'hidden': 'hidden'}}) }}
+    <br>
+	{% endif %}
+	
+	{{ form_row(form.subjectName)}}
+	<br>
+	{{ form_row(form.start_at)}}
+	<br>
+	{{ form_row(form.end_at)}}
+	<br>
+	{{ form_row(form.all_day)}}
+	<br>
+	{{ form_row(form.background_color)}}
+	<br>
+	{{ form_row(form.text_color)}}
+	<br>
+	{{ form_row(form.border_color)}}
+	<br>
+	{{ form_row(form.scheduleId)}}
+</fieldset>
+<div class="d-grid">
+<button class="btn btn-primary my-3 m-5">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}
+</div>
+</div>

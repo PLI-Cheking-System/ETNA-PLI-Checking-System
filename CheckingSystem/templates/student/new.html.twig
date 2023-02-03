@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin
+{% endblock %}
+
+{% block body %}
+	{# form for editing a student #}
+	{% if is_granted('ROLE_ADMIN') %}
+	<p class="mt-2 ms-5">
+		<a href="{{ path('app_student_all') }}" class=""> <img src="{{ asset('assets/local-img/button/back.png') }}" width="30px" height="30px" class="img-fluid"> </a>
+	</p>
+	<div class="vh-90 d-flex justify-content-center align-items-center">
+		<div class="col-md-6 p-5 shadow-sm border rounded-3 mt-5 bg-light">
+		{{ form_start(StudentForm) }}
+		<fieldset class="">
+			<legend class="text-center">Create a Student</legend>
+			{{ form_row(StudentForm.image)}}
+			<br>
+			{{ form_row(StudentForm.scheduleId)}}
+			<br>
+			{{ form_row(StudentForm.firstName) }}
+			<br>
+			{{ form_row(StudentForm.lastName) }}
+			<br>
+			{{ form_row(StudentForm.email) }}
+			<br>
+			{{ form_row(StudentForm.phone) }}
+			<br>
+			{# {{ form_row(StudentForm.matricule)}}
+			<br>
+			{{ form_row(StudentForm.qrCode) }} #}
+		</fieldset>
+		<button type="submit" class="btn btn-primary my-3 m-5">Create Student</button>
+		{{ form_end(StudentForm) }}
+	</div>
+	</div>
+	{% else %}
+		<div class="text-center p-5">
+			<h1>You are not Admin, you can't create a student</h1>
+			<a href="{{ path('app_student_all') }}" class="btn btn-success">Back to the list</a>
+		</div>
+
+	{% endif %}
+
+{% endblock %}

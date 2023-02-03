@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Subject index{% endblock %}
+
+{% block body %}
+{% if is_granted('ROLE_ADMIN') %}
+    <h1>All Subject</h1>
+    {% else %}
+    <h1>My Subject</h1>
+    {% endif %}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>TeacherName</th>
+                <th>Start_at</th>
+                <th>End_at</th>
+                <th>SubjectName</th>
+                <th>Created_at</th>
+                <th>All_day</th>
+                <th>schedule class</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if is_granted('ROLE_ADMIN') %}
+            {% for allSubject in subjects %}
+                <tr>
+                    <td>{{ allSubject.id }}</td>
+                    <td>{{ allSubject.teacherName }}</td>
+                    <td>{{ allSubject.subjectName }}</td>
+                    <td>{{ allSubject.scheduleId.classeSchedule }}</td>
+                    <td>{{ allSubject.startAt ? allSubject.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ allSubject.endAt ? allSubject.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ allSubject.createdAt ? allSubject.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ allSubject.allDay ? 'Yes' : 'No' }}</td>
+                    <td>
+                        <a class="btn btn-primary ms-4" href="{{ path('app_subject_show', {'id': allSubject.id}) }}">show</a>
+                        <a class="btn btn-primary ms-4" href="{{ path('app_subject_edit', {'id': allSubject.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+       
+            {% else %}
+        {% for subject in my_subjects %}
+            <tr>
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.teacherName }}</td>
+                <td>{{ subject.subjectName }}</td>
+                <td>{{ subject.scheduleId.classeSchedule }}</td>
+                <td>{{ subject.startAt ? subject.startAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ subject.endAt ? subject.endAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ subject.createdAt ? subject.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ subject.allDay ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a class="btn btn-primary ms-4" href="{{ path('app_subject_show', {'id': subject.id}) }}">show</a>
+                    <a class="btn btn-primary ms-4" href="{{ path('app_subject_edit', {'id': subject.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary ms-4" href="{{ path('app_subject_new') }}">Create new</a>
+{% endblock %}

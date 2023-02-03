@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {# user card with user infos : profile picture, username, email, ... #}
+    <section class="d-flex justify-content-center align-items-center">
+    <div class="card mt-3 d-flex justify-content-center col-6 ">
+        <div class="card-header d-flex justify-content-between w-100">
+            <h3 class="card-title">My Profile</h3> 
+            <a href="{{ path('app_users_edit', {'id': app.user.id}) }}" class=""><img src="{{ asset('assets/local-img/button/edit.png') }}" width="30px" height="30px"> </a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Email:</strong>
+                    {{ app.user.email }}
+                    <br>
+                    <strong>Firstname:</strong>
+                    {{ app.user.firstName }}
+                    <br>
+                    <strong>Lastname:</strong>
+                    {{ app.user.lastName }}
+                    <br>
+                    <strong>Id :</strong>
+                    {{ app.user.id }}
+                    <br>
+                    <strong>Joined at :</strong>
+                    {{ app.user.createdAt|date('Y') }}
+                    <br>
+                    <strong>Roles :</strong>
+                    {% if is_granted('ROLE_ADMIN') %}
+					Admin 
+				{% elseif is_granted('ROLE_USER') %}
+					Teacher
+				{% else %}
+					Guest
+					{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+    
+{% else %}
+    {# error message in the middle of the page #}
+    <div class="text-center p-5">
+         <h1>You are not authenticated. <a href="{{ path('app_login') }}">Login</a></h1>
+    </div>
+   
+{% endif %}
+
+{% endblock %}

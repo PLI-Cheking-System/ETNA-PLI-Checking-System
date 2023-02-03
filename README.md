@@ -1,3 +1,9 @@
+# What is Checking System ?
+
+Checking system is an advanced attendance system for companies or schools, students/employees can scan a QRCode to sign in and the system records the present in the database. The system consists of a website accessible by teachers/employers or they can see the presence of students/employees.
+Teachers/employers can also add courses/meetings in the calendars of students/employees.
+Each time a student/employee scans a QRCode, in addition to signing in, the system sends by mail to the student/employee his schedule for the week which is updated by the teachers/employers.
+
 # How to start our project
 
 ### Step 1 : clone the project
